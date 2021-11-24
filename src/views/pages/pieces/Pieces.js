@@ -1,34 +1,24 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CRow, CCol } from '@coreui/react'
 import PieceForm from 'src/components/Pieces/PieceForm'
 import PiecesTable from 'src/components/Pieces/PiecesTable'
-const initialDb = [
-  {
-    id: 1,
-    code: 'sd67a5d7sad8',
-    description: 'Piece 1',
-  },
-  {
-    id: 2,
-    code: '54ytg454',
-    description: 'Piece 2',
-  },
-  {
-    id: 3,
-    code: 'r435fret',
-    description: 'Piece 3',
-  },
-  {
-    id: 4,
-    code: 'fdt435t54',
-    description: 'Piece 4',
-  },
-]
+import { helpHttp } from 'src/helpers/helpHttp'
+
+let API = helpHttp();
+let url = "http://localhost:5000/v1/";
 
 const Pieces = () => {
-  const [db, setDb] = useState(initialDb)
+  const [db, setDb] = useState([])
   const [dataToEdit, setDataToEdit] = useState(null)
+
+  useEffect(()=>{
+    API.get(url).then((res)=>{
+      if(!res.err) setDb(res)
+      else setDb([])
+    });
+  },[]);
+
 
   const createData = (data) => {
     data.id = Date.now()
