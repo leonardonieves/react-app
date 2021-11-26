@@ -4,7 +4,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody } from '@co
 import PieceTableRow from './PiecesTableRow'
 
 const PiecesTable = ({ data, setDataToEdit, deleteData }) => {
-  return (
+  return ( 
     <div>
       <CTable hover>
         <CTableHead>
@@ -15,11 +15,12 @@ const PiecesTable = ({ data, setDataToEdit, deleteData }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {data.length === null || data.length ===0 ? (
+          {data.length === 0 ? (
             <tr>
               <td colSpan="3">No data to display</td>
             </tr>
-          ) : (
+          ) : 
+          (
             data.map((el) => (
               <PieceTableRow
                 key={el.id}
@@ -28,7 +29,8 @@ const PiecesTable = ({ data, setDataToEdit, deleteData }) => {
                 deleteData={deleteData}
               />
             ))
-          )}
+          )
+          }
         </CTableBody>
       </CTable>
     </div>

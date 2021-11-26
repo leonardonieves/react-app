@@ -5,8 +5,8 @@ export const helpHttp = () => {
       accept: 'application/json',
     }
 
-    const controller = new AbortController()
-    options.signal = controller.signal
+    // const controller = new AbortController()
+    // options.signal = controller.signal
 
     options.method = options.method || 'GET'
     options.header = options.header ? { ...defaultHeader, ...options.headers } : defaultHeader
@@ -14,7 +14,7 @@ export const helpHttp = () => {
     options.body = JSON.stringify(options.body) || false
     if (!options.body) delete options.body
 
-    setTimeout(() => controller.abort(), 30000)
+    // setTimeout(() => controller.abort(), 30000)
     return fetch(endpoint, options)
       .then((res) =>
         res.ok
