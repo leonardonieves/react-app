@@ -42,12 +42,12 @@ const _nav = [
     to: '/profile',
     icon: <CIcon icon={cilCog} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Typography',
-  //   to: '/theme/typography',
-  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  // },
+  {
+    component: CNavItem,
+    name: 'Logs',
+    to: '/logs',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
   // {
   //   component: CNavTitle,
   //   name: 'Components',

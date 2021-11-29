@@ -15,7 +15,7 @@ const PiecesTable = ({ data, setDataToEdit, deleteData }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {data.length === 0 ? (
+          {data.length <= 0 ? (
             <tr>
               <td colSpan="3">No data to display</td>
             </tr>

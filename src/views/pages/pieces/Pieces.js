@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CRow, CCol } from '@coreui/react'
 import PieceForm from 'src/components/Pieces/PieceForm'
 import PiecesTable from 'src/components/Pieces/PiecesTable'
-import { helpHttp } from 'src/helpers/helpHttp'
+// import { helpHttp } from 'src/helpers/helpHttp'
 import Loader from 'src/components/Pieces/Loader'
 import Message from 'src/components/Pieces/Message'
 import axios from 'axios'
@@ -14,43 +14,78 @@ const Pieces = () => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  let API = helpHttp()
-  let url = 'https://localhost:44384/api/piece/getall'
-
   useEffect(() => {
     setLoading(true)
-    // API.get(url).then((res) => {
-    //   if (!res.err) {
-    //     setDb(res)
-    //   }
-    //   else {
-    //     setDb(null)
-    //     setError(true)
-    //   }
-    //   setLoading(false)
-    // })
-    axios.get(url).then((res) => {
-      console.log(res)
-      setDb(res.data.result)      
-      setLoading(false)
-    })
+    axios
+      .get('https://localhost:44384/api/piece/getall')
+      .then((res) => {
+        console.log(res)
+        setDb(res.data.result)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log(error)
+        setError(error)
+        setLoading(false)
+      })
   }, [])
 
   const createData = (data) => {
-    data.id = Date.now()
-    setDb([...db, data])
+    setLoading(true)
+    axios
+      .post('https://localhost:44384/api/piece/add',
+      {
+        code: data.code,
+        description: data.description
+      })
+      .then((res) => {
+        setDb([...db, res.data])
+        setLoading(false)
+      })
+      .catch((error) => {
+        setError(error)
+        setLoading(false)
+      })    
   }
 
   const updateData = (data) => {
-    let newData = db.map((el) => (el.id === data.id ? data : el))
-    setDb(newData)
+    setLoading(true)
+    axios
+      .put(`https://localhost:44384/api/piece/${data.id}`,
+      {
+        code: data.code,
+        description: data.description
+      })
+      .then((res) => {
+        let newData = db.map((el) => (el.id === data.id ? data : el))
+        setDb(newData)
+        setDataToEdit(null)
+        setLoading(false)
+      })
+      .catch((error) => {
+        setError(error)
+        setLoading(false)
+      })
+    
   }
 
   const deleteData = (id) => {
     let isDelete = window.confirm(`Are you sure to delete the record with id ${id} ?`)
     if (isDelete) {
-      let newData = db.filter((el) => el.id !== id)
-      setDb(newData)
+      setLoading(true)
+      axios
+        .delete(`https://localhost:44384/api/piece/${id}`)
+        .then((res) => {
+          let newData = db.filter((el) => el.id !== id)
+          setDb(newData)
+          setDataToEdit(null)
+          setLoading(false)
+        })
+        .catch((error) => {
+          setError(error)
+          setLoading(false)
+        })
+      
     } else {
       return
     }
@@ -69,7 +104,7 @@ const Pieces = () => {
         />
         <hr />
         {loading && <Loader />}
-        {error && <Message />}
+        {error && <Message msg={`Error : ${error.message}`} bgcolor="#dc3545" />}
         {db && <PiecesTable data={db} setDataToEdit={setDataToEdit} deleteData={deleteData} />}
       </CCol>
     </CRow>

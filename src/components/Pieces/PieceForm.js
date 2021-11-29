@@ -16,7 +16,7 @@ const PieceForm = ({ createData, updateData, dataToEdit, setDataToEdit }) => {
     } else {
       setForm(initialForm)
     }
-  }, [dataToEdit])
+  }, [dataToEdit,createData])
 
   const handleChange = (e) => {
     setForm({

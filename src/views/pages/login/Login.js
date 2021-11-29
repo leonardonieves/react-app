@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,37 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import PropTypes from 'prop-types'
+import axios from 'axios'
 
-const Login = () => {
+async function loginUser({ username, password }) {
+  axios
+    .post('https://localhost:44384/api/account/login', {
+      email: username,
+      password: password,
+    })
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      return error
+    })
+}
+
+const Login = ({ setToken }) => {
+  const [username, setUserName] = useState()
+  const [password, setPassword] = useState()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const token = await loginUser({
+      username,
+      password,
+    })
+    setToken(token)
+    console.log(token)
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,14 +54,18 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        onChange={(e) => setUserName(e.target.value)}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,11 +75,12 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" type="submit">
                           Login
                         </CButton>
                       </CCol>
@@ -81,3 +115,6 @@ const Login = () => {
 }
 
 export default Login
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+}
