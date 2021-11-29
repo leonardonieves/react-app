@@ -41,30 +41,17 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 // }
 
 const App = () => {
-  const [token, setToken] = useState()
-
   return (
     <BrowserRouter>
       <React.Suspense fallback={loading}>
         <Switch>
-          {!token && (
-            <>
-              <Route
-                exact
-                path="/login"
-                name="Login Page"
-                render={(props) => <Login setToken={setToken} />}
-              />
-              <Redirect to="/login" />
-            </>
-          )}
+          <Route path="/login" name="Login Page" component={Login} />
+          {/* <Redirect to="/login" /> */}
+
+          <Route path="/" name="Home" component={Dashboard} />
+
           <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
           <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-          {token && (
-            <>
-              <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
-            </>
-          )}
         </Switch>
       </React.Suspense>
     </BrowserRouter>

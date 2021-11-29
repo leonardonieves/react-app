@@ -8,15 +8,11 @@ import { createUserProvider } from './userProvider'
 const createAuthProvider = () => {
   const tokenProvider = createTokenProvider()
   const userProvider = createUserProvider()
-    const credential = {
-        user:"aaa",
-        password: "dsfndjkhgkfd",
-
-    }
-  const login = async (credential) =>{
-
+  const credential = {
+    email: '',
+    password: '',
   }
+  const login = async (credential) => {}
 }
 
-export const { useAuth, login, logout, getToken, useUser, setUser } =
-  createAuthProvider();
+export const { useAuth, login, logout, getToken, useUser, setUser } = createAuthProvider()
